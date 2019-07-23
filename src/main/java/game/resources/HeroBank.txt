@@ -1,2 +1,0 @@
-Name, Class, Level, Experience, Attack, Defense, Hit points;
-Hero,     A,     1,         20,     50,      30,        100,
