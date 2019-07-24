@@ -19,7 +19,7 @@ import game.model.character.Hero;
 public class Game {
 
     protected static Hero hero;
-    public static BufferedWriter bufferedWriter;
+    
     public static Scanner scanner = null;
     //protected static List<Entity> observers = new ArrayList<Entity>();
 
@@ -30,6 +30,7 @@ public class Game {
             scanner = new Scanner(System.in);
             System.out.println(" *** Game start *** ");
             hero.heroMenu();
+            genMap();
 
             int game = 1;
             while (game > 0) {

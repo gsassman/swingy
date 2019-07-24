@@ -11,6 +11,8 @@ import java.util.NoSuchElementException;
 import game.*;
 
 public class Hero extends Character {
+    public static BufferedReader bufferedReader = null;
+    public static BufferedWriter bufferedWriter;
 
     protected int XP;
     protected int LVL;
@@ -23,11 +25,9 @@ public class Hero extends Character {
     protected String NAME;
 
     Hero() {
-    
     }
 
     public void move (int iInput) {
-
         switch (iInput) {
             case 1 :
                 this.LON = (LON - 1);
@@ -42,7 +42,6 @@ public class Hero extends Character {
                 this.LAT = (LAT - 1);
                 break;
         }
-
     }
 
     public void heroMenu() {
@@ -120,7 +119,8 @@ public class Hero extends Character {
 
     public void selectHero() {
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader("Heroes.txt"));   
+            
+            bufferedReader = new BufferedReader(new FileReader("Heroes.txt"));   
     
             String line = bufferedReader.readLine();
             if (line != null) {
@@ -186,28 +186,6 @@ public class Hero extends Character {
             System.out.println(" GAME OVER ");
         }
         
-        int BORDER = 0;
-        switch (LVL) {
-            case 1 :
-                BORDER = 9;
-                break;
-            case 2 :
-                BORDER = 15;
-                break;
-            case 3 :
-                BORDER = 19;
-                break;
-            case 4 :
-                BORDER = 25;
-                break;
-            case 5 :
-                BORDER = 35;
-                break;
-            default :
-                BORDER = 50;
-                break;
-        }
-
         int ATKMAX = XP;
         int ATKMIN = LVL;
         if (WEAPON != 0) {
@@ -231,24 +209,49 @@ public class Hero extends Character {
             HP = (100 + HELM);
         }
 
-        int LON = numGen(0, --BORDER);
-        int LAT = numGen(0, --BORDER);
+        int BORDER = 0;
+        switch (LVL) {
+            case 1 :
+                BORDER = 9;
+                break;
+            case 2 :
+                BORDER = 15;
+                break;
+            case 3 :
+                BORDER = 19;
+                break;
+            case 4 :
+                BORDER = 25;
+                break;
+            case 5 :
+                BORDER = 35;
+                break;
+            default :
+                BORDER = 50;
+                break;
+        }
+
+        int LON = (BORDER / 2);
+        int LAT = (BORDER / 2);
 
         super(CLASS, ATK, DEF, LON, LAT);
-        this.HP = HP;
         this.NAME = NAME;
+        this.HP = HP;
+        this.XP = XP;
         
     }
     
-    public static void saveHero() {
+    public void saveHero() {
         try {
-            FileWriter fileWriter = new FileWriter("Heroes.txt");
-            game.Game.bufferedWriter = new BufferedWriter(fileWriter);
-            
-            //bufferedWriter.write(input);
-            //bufferedWriter.write(this.name + "," + this.type + "," + this.xp + "," + this.weapon + "," + this.armour + "," + this.helm);
+            bufferedReader = new BufferedReader(new FileReader("Heroes.txt"));
 
-            game.Game.bufferedWriter.close();
+            if (bufferedReader == null) {
+                FileWriter fileWriter = new FileWriter("Heroes.txt");
+                bufferedWriter = new BufferedWriter(fileWriter);
+            }
+            
+            /*bufferedWriter.write(this.NAME + "," + this.CLASS + "," + this.XP + "," + this.WEAPON + "," + this.ARMOUR + "," + this.HELM);
+            bufferedWriter.close();*/
         } catch (IOException e) {
             System.out.println(" IOException: " + e); 
         }
@@ -264,7 +267,5 @@ public class Hero extends Character {
         if (r > 5) {
             this.fight(Villain);
         }
-
     }
-
 }
