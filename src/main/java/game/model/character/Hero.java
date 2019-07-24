@@ -1,51 +1,56 @@
 package game.model.character;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.util.NoSuchElementException;
+
 import game.*;
 
 public class Hero extends Character {
 
     protected int XP;
     protected int LVL;
-    protected String name;
+    protected int HP;
 
-    /*
-    Hero(String name, int lon, int lat, int hp, int exp, int atk, int def) {
-        super(name, lon, lat, hp);
-        this.exp = exp;
-        this.atk = atk;
-        this.def = def;
-        this.hp = hp;
-    }
-    */
+    protected int WEAPON = 0;
+    protected int ARMOUR = 0;
+    protected int HELM = 0 ;
+
+    protected String NAME;
 
     Hero() {
+    
     }
 
-    public void move (int input) {
+    public void move (int iInput) {
 
         switch (iInput) {
             case 1 :
-                this.lon = --lon;
+                this.LON = (LON - 1);
                 break;
             case 2 :
-                this.lon = ++lat;
+                this.LAT = (LAT + 1);
                 break;
             case 3 :
-                this.lon = ++lon;
+                this.LON = (LON + 1);
                 break;
             case 4 :
-                this.lon = --lat;
+                this.LAT = (LAT - 1);
                 break;
         }
 
     }
 
-    public static void heroMenu() {
+    public void heroMenu() {
         int iInput = 0;
         while (iInput < 1 || iInput > 3) {
             
             System.out.println("Please choose Hero : \n 1 : Create Hero \n 2 : Select Hero \n 0 : Exit");
-            iInput = Integer.parseInt(scanner.nextLine());
+            iInput = Integer.parseInt(game.Game.scanner.nextLine());
             
             switch  (iInput) {
                 case 0:
@@ -66,10 +71,10 @@ public class Hero extends Character {
         }
     }
 
-    public static void createNewHero() {
+    public void createNewHero() {
         try {
             System.out.println(" Please enter your name: \n 0 : EXIT");
-            String name = scanner.nextLine();
+            String name = game.Game.scanner.nextLine();
             
             if (name.equals("0")) {
                 System.out.println(" EXIT ");
@@ -79,7 +84,7 @@ public class Hero extends Character {
                 int iInput = -1;
                 while (iInput < 0 || iInput > 3) {
                     System.out.println(" Please choose a Hero type : \n 1 : Warrior \n 2 : Knight \n 3 : Barbarian \n 0 : EXIT ");
-                    iInput = Integer.parseInt(scanner.nextLine());
+                    iInput = Integer.parseInt(game.Game.scanner.nextLine());
 
                     switch (iInput) {
                         case 0 :
@@ -113,7 +118,7 @@ public class Hero extends Character {
         }
     }
 
-    public static void selectHero() {
+    public void selectHero() {
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader("Heroes.txt"));   
     
@@ -130,7 +135,7 @@ public class Hero extends Character {
                 int iInput = -1;
                 while (iInput < 0 && iInput > lineCount) {
                     System.out.println(" Please select Hero (1 - " + lineCount + "), 0 to EXIT :");
-                    iInput = Integer.parseInt(scanner.nextLine());
+                    iInput = Integer.parseInt(game.Game.scanner.nextLine());
 
                     if (iInput == 0) {
                         System.out.println(" EXIT ");
@@ -158,11 +163,13 @@ public class Hero extends Character {
             
         } catch (FileNotFoundException e) {
             System.out.println(" FileNotFoundException " + e);
+        } catch (IOException e) {
+            System.out.println(" IOException " + e);
         }
     }
         
     
-    public static void createHero(String NAME, String CLASS, int XP, int WEAPON, int ARMOUR, int HELM) {
+    public void createHero(String NAME, String CLASS, int XP, int WEAPON, int ARMOUR, int HELM) {
         
         int LVL = 0;
         if (XP <= 1000) {
@@ -202,35 +209,49 @@ public class Hero extends Character {
         }
 
         int ATKMAX = XP;
+        int ATKMIN = LVL;
         if (WEAPON != 0) {
-            ATKMAX = (XP + (WEAPON * WEAPON));
+            this.WEAPON = WEAPON;
+            ATKMAX = ((XP + (WEAPON * WEAPON) / 10));
+            ATKMIN = ((WEAPON * XP) / 20);
         }
-        int ATK = numGen(0, ATKMAX);
+        int ATK = numGen(ATKMIN , ATKMAX);
 
         int DEFMAX = XP;
+        int DEFMIN = LVL;
         if (ARMOUR != 0) {
-            DEFMAX = (XP + (ARMOUR * ARMOUR));
+            this.ARMOUR = ARMOUR;
+            DEFMAX = (XP + (ARMOUR * ARMOUR) / 10);
+            DEFMIN = ((ARMOUR * XP) / 20);
         }
-        int DEF = numGen(0, DEFMAX);
+        int DEF = numGen(DEFMIN, DEFMAX);
+
+        int HP = 100;
+        if (HELM != 0) {
+            HP = (100 + HELM);
+        }
 
         int LON = numGen(0, --BORDER);
         int LAT = numGen(0, --BORDER);
 
         super(CLASS, ATK, DEF, LON, LAT);
+        this.HP = HP;
+        this.NAME = NAME;
         
     }
     
     public static void saveHero() {
         try {
             FileWriter fileWriter = new FileWriter("Heroes.txt");
-            bufferedWriter = new BufferedWriter(fileWriter);
+            game.Game.bufferedWriter = new BufferedWriter(fileWriter);
             
             //bufferedWriter.write(input);
             //bufferedWriter.write(this.name + "," + this.type + "," + this.xp + "," + this.weapon + "," + this.armour + "," + this.helm);
 
-            bufferedWriter.close();
+            game.Game.bufferedWriter.close();
         } catch (IOException e) {
             System.out.println(" IOException: " + e); 
+        }
     }
 
     public void fight(Character Villain) {

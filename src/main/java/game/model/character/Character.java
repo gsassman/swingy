@@ -2,7 +2,9 @@ package game.model.character;
 
 import game.*;
 
-public abstract class Character {
+import java.lang.Math;
+
+public class Character {
 
     protected int LON;
     protected int LAT;
@@ -29,6 +31,10 @@ public abstract class Character {
         this.DEF = xp/3;
     }
 
+    public static int numGen(int min, int max){
+        return ((int)Math.random() * (max - min));
+    }
+
 }
 
 /*
@@ -50,9 +56,7 @@ public class Entity {
         this.hp = hp;
     }
 
-    public static int numGen(int min, int max){
-        return ((int)math.random() * (max - min));
-    }
+   
 
     
 

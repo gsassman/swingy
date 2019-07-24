@@ -14,6 +14,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import game.*;
+import game.model.character.Hero;
 
 public class Game {
 
@@ -28,7 +29,7 @@ public class Game {
         try {
             scanner = new Scanner(System.in);
             System.out.println(" *** Game start *** ");
-            Model.Entity.Character.Hero.heroMenu();
+            hero.heroMenu();
 
             int game = 1;
             while (game > 0) {
@@ -40,9 +41,9 @@ public class Game {
                     String sInput = scanner.nextLine();
                     iInput = Integer.parseInt(sInput);
                 }
-                if (iInput > 0 && iInput < 4) {
+                /*if (iInput > 0 && iInput < 4) {
                     hero.move(iInput);
-                }
+                }*/
                     
                 }
                 scanner.close();
