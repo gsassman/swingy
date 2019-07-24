@@ -162,12 +162,61 @@ public class Hero extends Character {
     }
         
     
-    public static void createHero(String name, String type, int xp, int weapon, int armour, int helm) {
-        super(name, type, xp, weapon, armour, helm);
-        //Entity v = new Villain();
-        //obervers.add();
-        //obervers.add(new Artefact());
-        //System.out.println(observers.name);
+    public static void createHero(String NAME, String CLASS, int XP, int WEAPON, int ARMOUR, int HELM) {
+        
+        int LVL = 0;
+        if (XP <= 1000) {
+            LVL = 1;
+        } else if (XP <= 2450) {
+            LVL = 2;
+        } else if (XP <= 4800) {
+            LVL = 3;
+        } else if (XP <= 8050) {
+            LVL = 4;
+        } else if (XP <= 12200) {
+            LVL = 5;
+        } else  {
+            System.out.println(" GAME OVER ");
+        }
+        
+        int BORDER = 0;
+        switch (LVL) {
+            case 1 :
+                BORDER = 9;
+                break;
+            case 2 :
+                BORDER = 15;
+                break;
+            case 3 :
+                BORDER = 19;
+                break;
+            case 4 :
+                BORDER = 25;
+                break;
+            case 5 :
+                BORDER = 35;
+                break;
+            default :
+                BORDER = 50;
+                break;
+        }
+
+        int ATKMAX = XP;
+        if (WEAPON != 0) {
+            ATKMAX = (XP + (WEAPON * WEAPON));
+        }
+        int ATK = numGen(0, ATKMAX);
+
+        int DEFMAX = XP;
+        if (ARMOUR != 0) {
+            DEFMAX = (XP + (ARMOUR * ARMOUR));
+        }
+        int DEF = numGen(0, DEFMAX);
+
+        int LON = numGen(0, --BORDER);
+        int LAT = numGen(0, --BORDER);
+
+        super(CLASS, ATK, DEF, LON, LAT);
         
     }
     

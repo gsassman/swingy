@@ -2,7 +2,7 @@ package game.model.character;
 
 import game.*;
 
-public class Character {
+public abstract class Character {
 
     protected int LON;
     protected int LAT;
