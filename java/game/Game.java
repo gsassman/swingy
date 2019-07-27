@@ -24,9 +24,7 @@ public class Game {
     public static int[][] map = null;
     protected static Hero hero;
 
-    
     public static Scanner scanner = null;
-    //protected static List<Entity> observers = new ArrayList<Entity>();
     
     public static void main(String[] argv) {
         try {

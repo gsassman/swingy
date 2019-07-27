@@ -14,9 +14,10 @@ public class Hero extends Characters {
     public static BufferedReader bufferedReader = null;
     public static BufferedWriter bufferedWriter;
 
+    public static String[] artefacts = {"WEAPON", "ARMOUR", "HELM"};
+
     protected int XP;
     protected int LVL;
-    protected int HP;
 
     protected int WEAPON = 0;
     protected int ARMOUR = 0;
@@ -25,6 +26,13 @@ public class Hero extends Characters {
     protected String NAME;
 
     Hero() {
+    }
+
+    Hero(String CLASS, int ATK, int DEF, int LON, int LAT, String NAME, int HP, int XP) {
+        super(CLASS, ATK, DEF, LON, LAT);
+        this.NAME = NAME;
+        this.HP = HP;
+        this.XP = XP;
     }
 
     public int getLVL() {
@@ -73,108 +81,6 @@ public class Hero extends Characters {
 
 	public void setHELM(int HELM) {
         this.HELM = HELM;
-    }
-
-	public void move (int iInput) {
-        int tempLON = this.LON;
-        int tempLAT = this.LAT;
-
-        switch (iInput) {
-            case 1 :
-                tempLON = (this.LON - 1);
-                break;
-            case 2 :
-                tempLAT = (this.LAT + 1);
-                break;  
-            case 3 :
-                tempLON = (this.LON + 1);
-                break;
-            case 4 :
-                tempLAT = (this.LAT - 1);
-                break;
-            case 0 :
-                System.out.println(" EXIT ");
-                System.exit(1);
-                break;
-        }
-
-        switch (Game.map[tempLON][tempLAT]) {
-            case 1 :
-                break;
-            case 2 :
-                break;
-            case 0 :
-                break;
-            case -1 :
-                break;
-                case 1 :
-                break;
-
-        }
-
-
-        switch (iInput) {
-            case 1 :
-                tempLON = (this.LON - 1);
-                switch (Game.map[tempLON][tempLAT]) {
-                    case 2 :
-                        collision();
-                        break;
-                    case -1 :
-                        Game.map[tempLON][tempLAT] = 0;
-                        break;
-                    default :
-                        Game.map[tempLON][tempLAT] = 0;
-                        this.LON = tempLON;
-                        tempLON = (this.LON + 1);
-                }
-                break;
-            case 2 :
-                tempLAT = (this.LAT + 1);
-                switch (Game.map[tempLON][tempLAT]) {
-                    case 2 :
-                        collision();
-                        break;
-                    case -1 :
-                        Game.map[tempLON][tempLAT] = 0;
-                        break;
-                    default :
-                        Game.map[tempLON][tempLAT] = 0;
-                        this.LAT = tempLAT;
-                        tempLAT = (this.LAT - 1);
-                }
-                break;
-            case 3 :
-                tempLON = (this.LON + 1);
-                switch (Game.map[tempLON][tempLAT]) {
-                    case 2 :
-                        collision();
-                        break;
-                    case -1 :
-                        Game.map[tempLON][tempLAT] = 0;
-                        break;
-                    default :
-                        Game.map[tempLON][tempLAT] = 0;
-                        this.LON = tempLON;
-                        tempLON = (this.LON - 1);
-                }
-                break;
-            case 4 :
-                tempLAT = (this.LAT - 1);
-                switch (Game.map[tempLON][tempLAT]) {
-                    case 2 :
-                        collision();
-                        break;
-                    case -1 :
-                        Game.map[tempLON][tempLAT] = 0;
-                        break;
-                    default :
-                        Game.map[tempLON][tempLAT] = 0;
-                        this.LAT = tempLAT;
-                        tempLON = (this.LAT + 1);
-                }
-                break;
-        }
     }
 
     public void heroMenu() {
@@ -301,7 +207,7 @@ public class Hero extends Characters {
         }
     }
          
-    public Hero createHero(String NAME, String CLASS, int XP, int WEAPON, int ARMOUR, int HELM) {
+    public void createHero(String NAME, String CLASS, int XP, int WEAPON, int ARMOUR, int HELM) {
         
         int LVL = 0;
         if (XP <= 1000) {
@@ -372,14 +278,145 @@ public class Hero extends Characters {
         int LON = (BORDER / 2);
         int LAT = (BORDER / 2);
 
-        super(CLASS, ATK, DEF, LON, LAT);
-        this.NAME = NAME;
-        this.HP = HP;
-        this.XP = XP;
-        
-        return this;
+        Hero(CLASS, ATK, DEF, LON, LAT, NAME, HP, XP); 
     }
+
     
+    
+    public void move (int iInput) {
+        int tempLON = this.LON;
+        int tempLAT = this.LAT;
+        
+        // assuming bottom left corner is 0, right and up is positive
+        switch (iInput) {
+            case 1 :
+                tempLON = (this.LON - 1);
+                break;
+            case 2 :
+                tempLAT = (this.LAT + 1);
+                break;  
+            case 3 :
+                tempLON = (this.LON + 1);
+                break;
+            case 4 :
+                tempLAT = (this.LAT - 1);
+                break;
+            case 0 :
+                System.out.println(" EXIT ");
+                System.exit(1);
+                break;
+        }
+
+        switch (Game.map[tempLON][tempLAT]) {
+            case -1 :
+                map[tempLON][tempLAT] = 1;
+                map[LON][LAT] = 0;
+                break;
+            case 1 :
+                map[LON][LAT] = 0;
+                break;
+            case 2 :
+                if (collision(tempLON, tempLAT) == 1) {
+                    map[tempLON][tempLAT] = 1;
+                    map[LON][LAT] = 0;
+                } else {
+                    map[tempLON][tempLAT] = 0;
+                    map[LON][LAT] = 1;
+                }
+                break;
+            case 0 :
+                System.out.println(" EXIT ");
+                System.exit(1);
+                break;
+        }
+    }
+   
+    public int collision(int tempLON, int tempLAT){
+   
+        int iInput = -1;
+        while (iInput < 0 || iInput > 2) {
+            System.out.println(" Villain encountered. \n 1 : Run \n 2 : Fight \n 0 : EXIT \n");
+            String sInput = Game.scanner.nextLine();
+            
+            iInput = Integer.parseInt(sInput);
+            switch (iInput) {
+                case 1 :
+                    int Luck = numGen(1,2);
+                    if (Luck == 1) {
+                        System.out.println(" Unlucky son, you were captured. ");
+                        return (fight(tempLON, tempLAT));
+                    } else {
+                        System.out.println(" Lucky fish, you have safely returned to you previous position ");
+                    }
+                    break;
+                case 2 :
+                    return (fight(tempLON, tempLAT));
+                    break;
+                case 0 :
+                    System.out.println(" Exit ");
+                    System.exit(1);
+                    break;
+            }
+        }
+        return (0);
+    }
+
+    public int fight(int tempLON, int tempLAT) {
+        System.out.println(" FIGHT "); 
+        Villain cVillain = new villainGen(tempLON, tempLAT);
+ 
+        while (cVillain.HP > 0 && this.HP > 0) {
+            int cDamage = this.ATK - cVillain.DEF;
+                if (cDamage < 0) {
+                    cVillain.HP = (cVillain.HP - cDamage);
+                    System.out.println(" Hero attacked Villain with " + this.ATK + " ATK. \n Villain blocked with " + cVillain.DEF + " DEF. \n Villain suffered " + cDamage + " damage. \n " + cVillain.HP + " Villain HP remaining");
+                } else {
+                    System.out.println(" Villain blocked Hero's attack and suffered no injury. ");
+                }
+
+            int hDamage = cVillain.ATK - this.DEF;
+                if (hDamage < 0) {
+                    this.HP = (this.HP - hDamage);
+                    System.out.println(" Villain attacked Hero with " + cVillain.ATK + " ATK. \n Hero blocked with " + this.DEF + " DEF. \n Hero suffered " + hDamage + " damage. \n " + this.HP + " Hero HP remaining.");
+                } else {
+                    System.out.println(" Hero blocked Villain's attack and suffered no injury. ");
+                }
+            
+                if (cDamage == 0 && hDamage == 0) {
+                    System.out.println(" Villain ran away. Damn, you must really have a face only a mother could love. ");
+                    genArtefact();
+                    return (1);
+                }
+        }
+
+        if (this.HP > 0) {
+            genArtefact();
+            return 1;
+        } else {
+            return (0);
+        }
+    }
+
+    public int genArtefact() {
+        
+        int iArtefact = numGen(0, artefacts.length);
+        String sArtefact = artefacts[iArtefact];
+
+        switch (b) {
+            case "WEAPON" :
+                this.WEAPON = this.LVL;
+                break;
+            case "ARMOUR" :
+                this.ARMOUR = this.LVL;
+                break;
+            case "HELM" :
+                this.HELM = this.LVL;
+                break;
+        }
+
+        return (1);
+    }
+
     public void saveHero() {
         try {
             bufferedReader = new BufferedReader(new FileReader("Heroes.txt"));
@@ -396,19 +433,4 @@ public class Hero extends Characters {
         }
     }
 
-    public void fight(Character Villain) {
-        System.out.println(" FIGHT "); 
-    }
-
-    public void run(Villain Villain) {
-        int r = numGen(0, 10);
-
-        if (r > 5) {
-            this.fight(Villain);
-        }
-    }
-
-    public void collision(){
-
-    }
 }

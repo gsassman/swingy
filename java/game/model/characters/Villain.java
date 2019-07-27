@@ -11,26 +11,27 @@ public class Villain extends Characters {
 
     Villain(String CLASS, int ATK, int DEF, int LON, int LAT) {
         super(CLASS, ATK, DEF, LON, LAT);
-    }
-
-    public static void randVillain() {
-        
+        this.HP = 100;
     }
     
-    public static void villainGen() {
+    public static void villainGen(int tempLON, int tempLAT) {
         int iClass = numGen(0, 2);
         String sClass = villains[iClass];
 
-        int LVL = Hero.getLVL;
+        /////////////
+        int DEf = 10;
+        int ATK = 10;
+        /////////////
+        
+        /*int LVL = Hero.getLVL;
         int XP = Hero.getXP;
-
-        /*int ATKMAX = (XP / 10);
+        int ATKMAX = (XP / 10);
         int ATKMIN = (XP / 20);
         int ATK = numGen(ATKMIN , ATKMAX);
 
         int DEFMAX = (XP / 10);
         int DEFMIN = (XP / 20);
-        int DEF = numGen(DEFMIN, DEFMAX);*/
+        int DEF = numGen(DEFMIN, DEFMAX);
 
         int BORDER = 0;
         switch (LVL) {
@@ -52,23 +53,8 @@ public class Villain extends Characters {
             default :
                 BORDER = 50;
                 break;
-        }
+        }*/
 
-        /////////////
-        int DEf = 10;
-        int ATK = 10;
-        /////////////
-
-        int LON = -1;
-        while (LON < 0 || LON > BORDER || (LON == (BORDER / 2))) {
-            LON = numGen(0, --BORDER);
-        }
-        
-        int LAT = -1;
-        while (LAT < 0 || LAT > BORDER || (LAT == (BORDER / 2))) {
-            LAT = numGen(0, --BORDER);
-        }
-        
-        Villain(sClass, ATK, DEF, LON, LAT);
+        Villain(sClass, ATK, DEF, tempLON, tempLAT);
     }
 }
