@@ -30,7 +30,7 @@ public class Game {
         try {
             scanner = new Scanner(System.in);
             System.out.println(" *** Game start *** ");
-            hero = hero.heroMenu();
+            Hero.heroMenu();
             map = mapGen(hero.getLVL());
 
             int game = 1;

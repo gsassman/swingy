@@ -83,7 +83,7 @@ public class Hero extends Characters {
         this.HELM = HELM;
     }
 
-    public void heroMenu() {
+    public static void heroMenu() {
         int iInput = 0;
         while (iInput < 1 || iInput > 3) {
             
@@ -309,19 +309,19 @@ public class Hero extends Characters {
 
         switch (Game.map[tempLON][tempLAT]) {
             case -1 :
-                map[tempLON][tempLAT] = 1;
-                map[LON][LAT] = 0;
+            Game.map[tempLON][tempLAT] = 1;
+            Game.map[LON][LAT] = 0;
                 break;
             case 1 :
-                map[LON][LAT] = 0;
+            Game.map[LON][LAT] = 0;
                 break;
             case 2 :
                 if (collision(tempLON, tempLAT) == 1) {
-                    map[tempLON][tempLAT] = 1;
-                    map[LON][LAT] = 0;
+                    Game.map[tempLON][tempLAT] = 1;
+                    Game.map[LON][LAT] = 0;
                 } else {
-                    map[tempLON][tempLAT] = 0;
-                    map[LON][LAT] = 1;
+                    Game.map[tempLON][tempLAT] = 0;
+                    Game.map[LON][LAT] = 1;
                 }
                 break;
             case 0 :
@@ -351,7 +351,6 @@ public class Hero extends Characters {
                     break;
                 case 2 :
                     return (fight(tempLON, tempLAT));
-                    break;
                 case 0 :
                     System.out.println(" Exit ");
                     System.exit(1);
@@ -402,7 +401,7 @@ public class Hero extends Characters {
         int iArtefact = numGen(0, artefacts.length);
         String sArtefact = artefacts[iArtefact];
 
-        switch (b) {
+        switch (sArtefact) {
             case "WEAPON" :
                 this.WEAPON = this.LVL;
                 break;
