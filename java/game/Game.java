@@ -1,36 +1,33 @@
 package game;
 
-import java.io.BufferedReader;
+/*import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.BufferedWriter;
+import java.util.NoSuchElementException;
+import javax.xml.stream.events.Characters;*/
+
 import java.lang.NumberFormatException;
 import java.lang.NullPointerException;
 import java.lang.ArrayIndexOutOfBoundsException;
-
-import java.io.BufferedWriter;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
-
-import javax.xml.stream.events.Characters;
-
-import game.*;
-import game.model.characters.*;
-
+import game.model.characters.Hero;
 
 public class Game {
 
+    public static Scanner scanner = null;
     public static int[][] map = null;
     protected static Hero hero;
-
-    public static Scanner scanner = null;
     
     public static void main(String[] argv) {
         try {
             scanner = new Scanner(System.in);
             System.out.println(" *** Game start *** ");
-            Hero.heroMenu();
+            heroMenu();
+
+            createHero();
             map = mapGen(hero.getLVL());
 
             int game = 1;
@@ -45,9 +42,8 @@ public class Game {
                 }
 
                 hero.move(iInput);
-                
-                }
-                scanner.close();
+            }
+            scanner.close();
     
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println(" ArrayIndexOutOfBoundsException: " + e);
@@ -88,4 +84,35 @@ public class Game {
             System.out.print("\n");
         }
     }
+
+    public static void heroMenu() {
+        int iInput = 0;
+        while (iInput < 1 || iInput > 3) {
+            
+            System.out.println("Please choose Hero : \n 1 : Create Hero \n 2 : Select Hero \n 0 : Exit");
+            iInput = Integer.parseInt(game.Game.scanner.nextLine());
+            
+            switch  (iInput) {       
+                case 1:
+                    System.out.println(" Create Hero ");
+                    createNewHero();
+                    break;
+                case 2:
+                    System.out.println(" Select Hero ");
+                    selectHero();
+                    break;
+                case 0:
+                    System.out.println(" Exit ");
+                    System.exit(1);
+                    break;
+                default :
+                    System.out.println(" Invalid argument ");
+            }
+        }
+    }
+
+    public int moveMenu() {
+        
+    }
+
 }

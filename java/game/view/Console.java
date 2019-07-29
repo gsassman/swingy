@@ -1,8 +1,6 @@
 package game.view;
 
-import game.*;
+//import game.*;
 
-public class Console {
-
-    
+public class Console {   
 }

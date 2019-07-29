@@ -1,5 +1,7 @@
 package game.view;
 
+//import game.*;
+
 public class Gui {
 /*    public void guiOutput() {
         if (view == gui) {

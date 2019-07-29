@@ -83,31 +83,7 @@ public class Hero extends Characters {
         this.HELM = HELM;
     }
 
-    public static void heroMenu() {
-        int iInput = 0;
-        while (iInput < 1 || iInput > 3) {
-            
-            System.out.println("Please choose Hero : \n 1 : Create Hero \n 2 : Select Hero \n 0 : Exit");
-            iInput = Integer.parseInt(game.Game.scanner.nextLine());
-            
-            switch  (iInput) {
-                case 0:
-                    System.out.println(" Exit ");
-                    System.exit(1);
-                    break;
-                case 1:
-                    System.out.println(" Create Hero ");
-                    createNewHero();
-                    break;
-                case 2:
-                    System.out.println(" Select Hero ");
-                    selectHero();
-                    break;
-                default :
-                    System.out.println(" Invalid argument ");
-            }
-        }
-    }
+   
 
     public void createNewHero() {
         try {
@@ -281,8 +257,6 @@ public class Hero extends Characters {
         Hero(CLASS, ATK, DEF, LON, LAT, NAME, HP, XP); 
     }
 
-    
-    
     public void move (int iInput) {
         int tempLON = this.LON;
         int tempLAT = this.LAT;
@@ -309,11 +283,11 @@ public class Hero extends Characters {
 
         switch (Game.map[tempLON][tempLAT]) {
             case -1 :
-            Game.map[tempLON][tempLAT] = 1;
-            Game.map[LON][LAT] = 0;
+                Game.map[tempLON][tempLAT] = 1;
+                Game.map[LON][LAT] = 0;
                 break;
             case 1 :
-            Game.map[LON][LAT] = 0;
+                Game.map[LON][LAT] = 0;
                 break;
             case 2 :
                 if (collision(tempLON, tempLAT) == 1) {
@@ -361,7 +335,7 @@ public class Hero extends Characters {
     }
 
     public int fight(int tempLON, int tempLAT) {
-        System.out.println(" FIGHT "); 
+        System.out.println(" FIGHTO "); 
         Villain cVillain = new villainGen(tempLON, tempLAT);
  
         while (cVillain.HP > 0 && this.HP > 0) {
@@ -389,6 +363,7 @@ public class Hero extends Characters {
         }
 
         if (this.HP > 0) {
+            this.XP += cVillain.ATK;
             genArtefact();
             return 1;
         } else {
@@ -396,37 +371,80 @@ public class Hero extends Characters {
         }
     }
 
-    public int genArtefact() {
+    public void lvlUP() {
+
+        int cLVL = 0;
+        int LVL = this.LVL;
+
+        int XP = this.XP;
+        if (XP <= 1000) {
+            cLVL = 1;
+        } else if (XP <= 2450) {
+            cLVL = 2;
+        } else if (XP <= 4800) {
+            cLVL = 3;
+        } else if (XP <= 8050) {
+            cLVL = 4;
+        } else if (XP <= 12200) {
+            cLVL = 5;
+        } else  {
+            System.out.println(" GAME OVER ");
+        }
+
+        if (cLVL > LVL) {
+            this.LVL = LVL;
+            saveHero();
+            //new Map();
+        }
+    }
+
+    public void genArtefact() {
         
         int iArtefact = numGen(0, artefacts.length);
         String sArtefact = artefacts[iArtefact];
 
-        switch (sArtefact) {
-            case "WEAPON" :
-                this.WEAPON = this.LVL;
-                break;
-            case "ARMOUR" :
-                this.ARMOUR = this.LVL;
-                break;
-            case "HELM" :
-                this.HELM = this.LVL;
-                break;
-        }
+        String sInput = null;
+        int iInput = -1;
+        while (iInput < 0 || iInput > 2) {
 
-        return (1);
+            System.out.println(" Villain dropped an artefact : " + sArtefact + " . \n 1 : Take it \n 2 : leave it ? \n 0 : EXIT ");
+            sInput = game.Game.scanner.nextLine();
+            iInput = Integer.parseInt(sInput);
+
+            switch (iInput) {
+                case 1 :
+                    switch (sArtefact) {
+                        case "WEAPON" :
+                            this.WEAPON = this.LVL;
+                            break;
+                        case "ARMOUR" :
+                            this.ARMOUR = this.LVL;
+                            break;
+                        case "HELM" :
+                            this.HELM = this.LVL;
+                            break;
+                    }
+                    break;
+                case 2 :
+                    System.out.println(" Artefact disappeared forever... ");
+                    break;
+                case 0 :
+                    System.out.println(" Exit ");
+                    System.exit(1);
+                    break;
+            }
+        }
     }
 
     public void saveHero() {
         try {
             bufferedReader = new BufferedReader(new FileReader("Heroes.txt"));
+            FileWriter fileWriter = new FileWriter("Heroes.txt", true);
+            bufferedWriter = new BufferedWriter(fileWriter);
 
-            if (bufferedReader == null) {
-                FileWriter fileWriter = new FileWriter("Heroes.txt");
-                bufferedWriter = new BufferedWriter(fileWriter);
-            }
-            
-            /*bufferedWriter.write(this.NAME + "," + this.CLASS + "," + this.XP + "," + this.WEAPON + "," + this.ARMOUR + "," + this.HELM);
-            bufferedWriter.close();*/
+            bufferedWriter.write(this.NAME + "," + this.CLASS + "," + this.XP + "," + this.WEAPON + "," + this.ARMOUR + "," + this.HELM);
+            bufferedWriter.close();
+      
         } catch (IOException e) {
             System.out.println(" IOException: " + e);  
         }

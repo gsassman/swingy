@@ -1,8 +1,5 @@
 package game.model.characters;
 
-import game.*;
-import java.lang.Math;
-
 public class Characters {
 
     protected int HP;
