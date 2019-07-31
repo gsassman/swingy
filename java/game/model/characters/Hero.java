@@ -365,6 +365,8 @@ public class Hero extends Characters {
         if (this.HP > 0) {
             this.XP += cVillain.ATK;
             genArtefact();
+            lvlUP();
+            Game.Hero = createHero(this.NAME, this.CLASS, this.XP, this.WEAPON, this.ARMOUR, this.HELM);
             return 1;
         } else {
             return (0);
@@ -392,9 +394,8 @@ public class Hero extends Characters {
         }
 
         if (cLVL > LVL) {
-            this.LVL = LVL;
-            saveHero();
-            //new Map();
+            this.LVL = cLVL;
+            Game.mapGen(this.LVL);
         }
     }
 

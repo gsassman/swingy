@@ -27,7 +27,6 @@ public class Game {
             System.out.println(" *** Game start *** ");
             heroMenu();
 
-            createHero();
             map = mapGen(hero.getLVL());
 
             int game = 1;
@@ -59,7 +58,7 @@ public class Game {
     public static int[][] mapGen(int LVL) {
         int LonMax = (LVL - 1) * 5 + 10 - (LVL % 2);
         int LatMax = LonMax;
-        int[][] map = new int[LonMax][LatMax];
+        map = new int[LonMax][LatMax];
 
         for (int j = 0; j < LatMax; j++){
             for (int i = 0; i < LonMax; i++) {
@@ -85,14 +84,18 @@ public class Game {
         }
     }
 
-    public static void heroMenu() {
-        int iInput = 0;
-        while (iInput < 1 || iInput > 3) {
+    public void heroMenu() {
+        int iInput = -1;
+        while (iInput < 0 || iInput > 3) {
             
             System.out.println("Please choose Hero : \n 1 : Create Hero \n 2 : Select Hero \n 0 : Exit");
             iInput = Integer.parseInt(game.Game.scanner.nextLine());
             
             switch  (iInput) {       
+                case 0:
+                    System.out.println(" Exit ");
+                    System.exit(1);
+                    break;
                 case 1:
                     System.out.println(" Create Hero ");
                     createNewHero();
@@ -101,10 +104,6 @@ public class Game {
                     System.out.println(" Select Hero ");
                     selectHero();
                     break;
-                case 0:
-                    System.out.println(" Exit ");
-                    System.exit(1);
-                    break;
                 default :
                     System.out.println(" Invalid argument ");
             }
@@ -112,6 +111,11 @@ public class Game {
     }
 
     public int moveMenu() {
+        
+    }
+
+    public int EXIT() {
+        Game.model.characters.Hero.saveHero();
         
     }
 
