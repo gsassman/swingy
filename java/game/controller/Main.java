@@ -1,6 +1,4 @@
-package game;
-
-//import game.*;
+package game.controller;
 
 public class Main {
 
@@ -8,6 +6,7 @@ public class Main {
         switch(argv[0]) {
             case "CONSOLE" :
                 System.out.println(" Console ");
+                Game.startGame();
                 break;
             case "GUI" :
                 System.out.println(" GUI ");

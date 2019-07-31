@@ -1,4 +1,4 @@
-package game;
+package game.controller;
 
 /*import java.io.BufferedReader;
 import java.io.FileReader;
@@ -13,7 +13,8 @@ import java.lang.NumberFormatException;
 import java.lang.NullPointerException;
 import java.lang.ArrayIndexOutOfBoundsException;
 import java.util.Scanner;
-import game.model.characters.Hero;
+
+import game.model.Hero;
 
 public class Game {
 
@@ -21,7 +22,7 @@ public class Game {
     public static int[][] map = null;
     protected static Hero hero;
     
-    public static void main(String[] argv) {
+    public static void startGame() {
         try {
             scanner = new Scanner(System.in);
             System.out.println(" *** Game start *** ");
@@ -114,7 +115,37 @@ public class Game {
         
     }
 
-    public int EXIT() {
+    public int levelExit() {
+        System.out.println(" You will have to restart this level. \n Are you sure you want to leave now? \n 1 : Back \n 0 : EXIT ");
+
+        String type = null;
+        int iInput = -1;
+        while (iInput < 0 || iInput > 3) {
+            System.out.println(" Please choose a Hero type : \n 1 : Warrior \n 2 : Knight \n 3 : Barbarian \n 0 : EXIT ");
+            iInput = Integer.parseInt(game.Game.scanner.nextLine());
+
+            switch (iInput) {
+                case 0 :
+                    System.out.println(" EXIT ");
+                    System.exit(1);
+                    break;
+                case 1 :
+                    System.out.println(" Warrior ");
+                    type = "Warrior";
+                    break;
+                case 2 :
+                    System.out.println(" Knight ");
+                    type = "Knight";
+                    break;
+                case 3 :
+                    System.out.println(" Barbarian ");
+                    type = "Barbarian";
+                    break;
+                default :
+                    System.out.println(" Invalid argument ");
+            }
+        }
+        
         Game.model.characters.Hero.saveHero();
         
     }
